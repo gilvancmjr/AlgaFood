@@ -19,15 +19,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.algaworks.algafood.exception.EntidadeNaoEncontradaException;
-import com.algaworks.algafood.model.Restaurante;
-import com.algaworks.algafood.repository.RestauranteRepository;
-import com.algaworks.algafood.service.CadastroRestauranteService;
+import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
+import com.algaworks.algafood.domain.model.Restaurante;
+import com.algaworks.algafood.domain.repository.RestauranteRepository;
+import com.algaworks.algafood.domain.service.CadastroRestauranteService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
 @RequestMapping(value = "/restaurantes")
 public class RestauranteController {
+
 
 	@Autowired
 	private RestauranteRepository restauranteRepository;
