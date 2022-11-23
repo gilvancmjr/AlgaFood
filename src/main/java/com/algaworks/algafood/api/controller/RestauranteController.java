@@ -29,7 +29,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @RequestMapping(value = "/restaurantes")
 public class RestauranteController {
 
-
 	@Autowired
 	private RestauranteRepository restauranteRepository;
 	
@@ -96,4 +95,5 @@ public class RestauranteController {
 			ReflectionUtils.setField(field, restauranteDestino, novoValor);
 		});
 	}
+	
 }

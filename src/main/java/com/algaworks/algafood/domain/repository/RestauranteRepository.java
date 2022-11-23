@@ -13,22 +13,23 @@ import com.algaworks.algafood.domain.model.Restaurante;
 
 @Repository
 public interface RestauranteRepository
-		extends CustomJpaRepository<Restaurante, Long>, RestauranteRepositoryQueries, JpaSpecificationExecutor<Restaurante> {
+extends CustomJpaRepository<Restaurante, Long>, RestauranteRepositoryQueries,
+JpaSpecificationExecutor<Restaurante> {
 
-	@Query(value ="from Restaurante r left join fetch r.cozinha")
-	List<Restaurante> findAll() ;
+@Query("from Restaurante r join fetch r.cozinha")
+List<Restaurante> findAll();
 
-	List<Restaurante> queryByTaxaFreteBetween(BigDecimal taxaInicial, BigDecimal taxaFinal);
+List<Restaurante> queryByTaxaFreteBetween(BigDecimal taxaInicial, BigDecimal taxaFinal);
 
-	// @Query("from Restaurante where nome like %:nome% and cozinha.id = :id")
-	List<Restaurante> consultarPorNome(String nome, @Param("id") Long cozinha);
+//@Query("from Restaurante where nome like %:nome% and cozinha.id = :id")
+//List<Restaurante> consultarPorNome(String nome, @Param("id") Long cozinha);
 
-//	List<Restaurante> findByNomeContainingAndCozinhaId(String nome, Long cozinha);
+//List<Restaurante> findByNomeContainingAndCozinhaId(String nome, Long cozinha);
 
-	Optional<Restaurante> findFirstRestauranteByNomeContaining(String nome);
+Optional<Restaurante> findFirstRestauranteByNomeContaining(String nome);
 
-	List<Restaurante> findTop2ByNomeContaining(String nome);
+List<Restaurante> findTop2ByNomeContaining(String nome);
 
-	int countByCozinhaId(Long cozinha);
+int countByCozinhaId(Long cozinha);
 
 }

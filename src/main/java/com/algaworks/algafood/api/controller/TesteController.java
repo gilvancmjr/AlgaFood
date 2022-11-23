@@ -49,10 +49,10 @@ public class TesteController {
 		return restauranteRepository.queryByTaxaFreteBetween(taxaInicial, taxaFinal);
 	}
 
-	@GetMapping("/restaurantes/por-nome")
-	public List<Restaurante> restaurantesPorTaxaFrete(String nome, Long cozinhaId) {
-		return restauranteRepository.consultarPorNome(nome, cozinhaId);
-	}
+//	@GetMapping("/restaurantes/por-nome")
+//	public List<Restaurante> restaurantesPorTaxaFrete(String nome, Long cozinhaId) {
+//		return restauranteRepository.consultarPorNome(nome, cozinhaId);
+//	}
 
 	@GetMapping("/restaurantes/primeiro-por-nome")
 	public Optional<Restaurante> restaurantePrimeiroPorNome(String nome) {
