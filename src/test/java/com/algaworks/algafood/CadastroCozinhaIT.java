@@ -38,6 +38,8 @@ class CadastroCozinhaIT {
 		RestAssured.given().accept(ContentType.JSON).when().get().then().body("", Matchers.hasSize(4)).body("nome",
 				Matchers.hasItems("Indiana", "Tailandesa"));
 	}
+	
+	//testes
 
 	// TESTE DE INTEGRAÇÃO
 
