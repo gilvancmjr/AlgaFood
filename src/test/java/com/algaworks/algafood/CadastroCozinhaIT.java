@@ -58,6 +58,8 @@ public class CadastroCozinhaIT {
 		RestAssured.given().accept(ContentType.JSON).when().get().then().body("",
 				Matchers.hasSize(quantidadeCozinhasCadastradas));
 	}
+	
+	//testes
 
 	@Test
 	public void deveRetornarStatus201_QuandoCadastrarCozinha() {
