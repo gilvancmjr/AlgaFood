@@ -31,8 +31,8 @@ public class Endereco {
 	@JoinColumn(name = "endereco_cidade_id")
 	private Cidade cidade;
 	
-	public String getNomeEstadoDaCidade() {
-	    return cidade.getEstado().getNome();
-	}
+//	public String getNomeEstadoDaCidade() {
+//	    return cidade.getEstado().getNome();
+//	}
 
 }

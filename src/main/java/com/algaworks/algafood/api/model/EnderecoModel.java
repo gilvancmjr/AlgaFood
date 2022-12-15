@@ -18,8 +18,8 @@ public class EnderecoModel {
 
 	private CidadeResumoModel cidade;
 	
-	public void setNomeEstadoDaCidade(String nome) {
-		   cidade.setEstado(nome);
-		}
+//	public void setNomeEstadoDaCidade(String nome) {
+//		   cidade.setEstado(nome);
+//		}
 
 }
