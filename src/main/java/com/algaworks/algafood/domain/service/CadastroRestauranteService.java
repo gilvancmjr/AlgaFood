@@ -1,5 +1,7 @@
 package com.algaworks.algafood.domain.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -100,6 +102,16 @@ public class CadastroRestauranteService {
 		Usuario usuario = cadastroUsuario.buscarOuFalhar(usuarioId);
 
 		restaurante.adicionarResponsavel(usuario);
+	}
+
+	@Transactional
+	public void ativar(List<Long> restauranteId) {
+		restauranteId.forEach(this::ativar);
+	}
+	
+	@Transactional
+	public void inativar(List<Long> restauranteId) {
+		restauranteId.forEach(this::inativar);
 	}
 
 	public Restaurante buscarOuFalhar(Long restauranteId) {
