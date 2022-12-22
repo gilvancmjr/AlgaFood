@@ -24,7 +24,7 @@ public class ModelMapperConfig {
 		// EnderecoModel.class).addMapping(Endereco::getNomeEstadoDaCidade,
 		// EnderecoModel::setNomeEstadoDaCidade);
 
-		return new ModelMapper();
+		return  modelMapper;
 	}
 
 }
