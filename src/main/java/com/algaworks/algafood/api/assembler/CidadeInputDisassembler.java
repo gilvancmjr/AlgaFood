@@ -22,7 +22,6 @@ public class CidadeInputDisassembler {
         // Para evitar org.hibernate.HibernateException: identifier of an instance of 
         // com.algaworks.algafood.domain.model.Estado was altered from 1 to 2
         cidade.setEstado(new Estado());
-        
         modelMapper.map(cidadeInput, cidade);
     }
     
