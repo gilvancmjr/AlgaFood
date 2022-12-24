@@ -25,4 +25,13 @@ public class CidadeInputDisassembler {
         modelMapper.map(cidadeInput, cidade);
     }
     
+    //como fazer um converter de String para localDate
+    //https://www.baeldung.com/spring-mvc-custom-data-binder
+
+    
+
+
+
+
+
 }
