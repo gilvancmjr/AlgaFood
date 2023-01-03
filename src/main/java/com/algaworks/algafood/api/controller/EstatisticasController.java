@@ -26,13 +26,13 @@ public class EstatisticasController {
 	@Autowired
 	private VendaReportService vendaReportService;
 
-	@GetMapping("/vendas-diarias")
+	@GetMapping(path = "/vendas-diarias", produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<VendaDiaria> consultarVendasDiarias(VendaDiariaFilter filtro,
 			@RequestParam(required = false, defaultValue = "+00:00") String timeOffset) {
 		return vendaQueryService.consultarVendasDiarias(filtro, timeOffset);
 	}
 
-	@GetMapping("/vendas-diarias-pdf")
+	@GetMapping(path = "/vendas-diarias", produces = MediaType.APPLICATION_PDF_VALUE)
 	public ResponseEntity<byte[]> consultarVendasDiariasPdf(VendaDiariaFilter filtro,
 			@RequestParam(required = false, defaultValue = "+00:00") String timeOffset) {
 
