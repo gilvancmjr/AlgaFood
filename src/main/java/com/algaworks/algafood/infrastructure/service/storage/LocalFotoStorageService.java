@@ -12,23 +12,34 @@ import com.algaworks.algafood.domain.service.FotoStorageService;
 @Service
 public class LocalFotoStorageService implements FotoStorageService {
 
-    @Value("${algafood.storage.local.diretorio-fotos}")
-    private Path diretoriosFotos;
+	@Value("${algafood.storage.local.diretorio-fotos}")
+	private Path diretoriosFotos;
 
-    @Override
-    public void armazenar(NovaFoto novaFoto) {
+	@Override
+	public void armazenar(NovaFoto novaFoto) {
 
-        try {
-            Path arquivoPath = getArquivoPath(novaFoto.getNomeArquivo());
-            FileCopyUtils.copy(novaFoto.getInputStream(), Files.newOutputStream(arquivoPath));
-        } catch (Exception e) {
-            throw new StorageException("Não foi possível armazenar arquivo.", null);
-        }
+		try {
+			Path arquivoPath = getArquivoPath(novaFoto.getNomeArquivo());
+			FileCopyUtils.copy(novaFoto.getInputStream(), Files.newOutputStream(arquivoPath));
+		} catch (Exception e) {
+			throw new StorageException("Não foi possível armazenar arquivo.", null);
+		}
 
-    }
+	}
 
-    private Path getArquivoPath(String nomeArquivo) {
-        return diretoriosFotos.resolve(Path.of(nomeArquivo));
-    }
+	private Path getArquivoPath(String nomeArquivo) {
+		return diretoriosFotos.resolve(Path.of(nomeArquivo));
+	}
+
+	@Override
+	public void remover(String nomeArquivo) {
+		try {
+			Path arquivoPath = getArquivoPath(nomeArquivo);
+			Files.deleteIfExists(arquivoPath);
+		} catch (Exception e) {
+			throw new StorageException("Não foi possível excluir arquivo.", e);
+		}
+
+	}
 
 }
