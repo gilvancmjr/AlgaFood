@@ -40,9 +40,10 @@ public class CatalogoFotoProdutoService {
 		foto = produtoRepository.save(foto);
 		produtoRepository.flush();
 
-		NovaFoto novaFoto = NovaFoto.builder().nomeArquivo(foto.getNomeArquivo()).inputStream(dadosArquivo).build();
+		NovaFoto novaFoto = NovaFoto.builder().nomeAquivo(foto.getNomeArquivo()).contentType(foto.getContentType())
+				.inputStream(dadosArquivo).build();
 
-		fotoStorage.subistituir(nomeArquivoExistente, novaFoto);
+		fotoStorage.substituir(nomeArquivoExistente, novaFoto);
 
 		return foto;
 	}
@@ -58,8 +59,7 @@ public class CatalogoFotoProdutoService {
 		produtoRepository.delete(fotoProduto);
 		produtoRepository.flush();
 
-		fotoStorage.recuperar(fotoProduto.getNomeArquivo());
-
+		fotoStorage.remover(fotoProduto.getNomeArquivo());
 	}
 
 }
