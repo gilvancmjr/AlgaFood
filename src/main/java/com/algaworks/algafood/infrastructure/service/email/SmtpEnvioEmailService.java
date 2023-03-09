@@ -50,7 +50,7 @@ public class SmtpEnvioEmailService implements EnvioEmailService {
 			Template template = freemarkerConfig.getTemplate(mensagem.getCorpo());
 			return FreeMarkerTemplateUtils.processTemplateIntoString(template, mensagem.getVariaveis());
 		} catch (Exception e) {
-			throw new EmailException("Não foi possivel montar o template do e-mailA", e);
+			throw new EmailException("Não foi possivel montar o template do e-mail", e);
 		}
 
 	}

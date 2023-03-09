@@ -13,7 +13,7 @@ public class SecurityConfig {
 	public SecurityFilterChain configure(HttpSecurity http) throws Exception {
 		http.httpBasic()
 
-				.and().authorizeRequests().antMatchers("/estatisticas/**").permitAll().anyRequest().authenticated()
+				.and().authorizeRequests().antMatchers("/*/**").permitAll().anyRequest().authenticated()
 
 				.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
