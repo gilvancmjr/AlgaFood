@@ -14,20 +14,21 @@ public class FluxoPedidoService {
 	private EmissaoPedidoService emissaoPedidoService;
 
 	@Autowired
-	private EnvioEmailService emailService;
+	private EnvioEmailService envioEmail;
 
 	@Transactional
 	public void confirmar(String codigoPedido) {
 		Pedido pedido = emissaoPedidoService.buscarOuFalhar(codigoPedido);
 		pedido.confirmar();
-
-		var mensagem = Mensagem.builder().assunto(pedido.getRestaurante().getNome() + " - Pedido confirmado")
+		
+		var mensagem = Mensagem.builder()
+				.assunto(pedido.getRestaurante().getNome() + " - Pedido confirmado")
 				.corpo("pedido-confirmado.html")
-				.variavel(codigoPedido, pedido)
+				.variavel("pedido", pedido)
 				.destinatario(pedido.getCliente().getEmail())
 				.build();
-
-		emailService.enviar(mensagem);
+		
+		envioEmail.enviar(mensagem);
 	}
 
 	@Transactional
