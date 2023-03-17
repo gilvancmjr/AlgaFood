@@ -16,6 +16,5 @@ public class FakeEnvioEmailService extends SmtpEnvioEmailService{
 
         log.info("[FAKE E-MAIL] Para: {}\n{}", mensagem.getDestinatarios(), corpo);
 	}
-	
 
 }
