@@ -24,6 +24,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.domain.AbstractAggregateRoot;
 
 import com.algaworks.algafood.domain.exception.NegocioException;
+import com.algaworks.algafood.domain.model.event.PedidoCanceladoEvent;
 import com.algaworks.algafood.domain.model.event.PedidoConfirmadoEvent;
 
 import lombok.Data;
@@ -83,8 +84,10 @@ public class Pedido extends AbstractAggregateRoot<Pedido>{
 	}
 
 	public void cancelar() {
-		setStatus(StatusPedido.CANCELADO);
-		setDataCancelamento(OffsetDateTime.now());
+	    setStatus(StatusPedido.CANCELADO);
+	    setDataCancelamento(OffsetDateTime.now());
+	    
+	    registerEvent(new PedidoCanceladoEvent(this));
 	}
 
 	private void setStatus(StatusPedido novoStatus) {
@@ -95,6 +98,7 @@ public class Pedido extends AbstractAggregateRoot<Pedido>{
 		}
 		this.status = novoStatus;
 	}
+	
 
 	@PrePersist //executa antes de persistir o objeto no banco de dados
 	private void gerarCodigo() {

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.algaworks.algafood.core.email.EmailProperties;
 
-//@Service
+@Service
 public class SandboxEnvioEmailService extends SmtpEnvioEmailService {
 
 	 @Autowired
