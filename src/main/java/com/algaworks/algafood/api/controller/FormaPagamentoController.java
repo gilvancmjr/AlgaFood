@@ -1,11 +1,14 @@
 package com.algaworks.algafood.api.controller;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,17 +45,21 @@ public class FormaPagamentoController {
 	private FormaPagamentoInputDisassembler formaPagamentoInputDisassembler;
 
 	@GetMapping
-	public List<FormaPagamentoModel> listar() {
+	public ResponseEntity<List<FormaPagamentoModel>> listar() {
+		List<FormaPagamentoModel> formaPagamentoModels = formaPagamentoModelAssembler
+				.toCollectionModel(formaPagamentoRepository.findAll());
 
-		return formaPagamentoModelAssembler.toCollectionModel(formaPagamentoRepository.findAll());
+		return ResponseEntity.ok().cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS)).body(formaPagamentoModels);
 
 	}
 
 	@GetMapping("/{formaPagamentoId}")
-	public FormaPagamentoModel buscar(@PathVariable Long formaPagamentoId) {
+	public ResponseEntity<FormaPagamentoModel> buscar(@PathVariable Long formaPagamentoId) {
 		FormaPagamento formaPagamento = cadastroFormaPagamento.buscarOuFalhar(formaPagamentoId);
+		
+		FormaPagamentoModel formaPagamentoModel = formaPagamentoModelAssembler.toModel(formaPagamento);
 
-		return formaPagamentoModelAssembler.toModel(formaPagamento);
+		return ResponseEntity.ok().cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS)).body(formaPagamentoModel);
 
 	}
 
