@@ -49,7 +49,12 @@ public class FormaPagamentoController {
 		List<FormaPagamentoModel> formaPagamentoModels = formaPagamentoModelAssembler
 				.toCollectionModel(formaPagamentoRepository.findAll());
 
-		return ResponseEntity.ok().cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS)).body(formaPagamentoModels);
+		return ResponseEntity.ok().cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS)
+				//.cachePrivate() -> quando cache for algo especifico de uma usuario
+				//.cachePublic() -> inf compartilhada
+				//.cachePrivate().noCache() valida o cache no servidor
+				//.noStore() não cache
+				).body(formaPagamentoModels);
 
 	}
 
