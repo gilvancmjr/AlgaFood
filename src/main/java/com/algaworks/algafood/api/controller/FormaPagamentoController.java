@@ -1,5 +1,6 @@
 package com.algaworks.algafood.api.controller;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.ServletWebRequest;
+import org.springframework.web.filter.ShallowEtagHeaderFilter;
 
 import com.algaworks.algafood.api.assembler.FormaPagamentoInputDisassembler;
 import com.algaworks.algafood.api.assembler.FormaPagamentoModelAssembler;
@@ -45,27 +48,62 @@ public class FormaPagamentoController {
 	private FormaPagamentoInputDisassembler formaPagamentoInputDisassembler;
 
 	@GetMapping
-	public ResponseEntity<List<FormaPagamentoModel>> listar() {
+	public ResponseEntity<List<FormaPagamentoModel>> listar(ServletWebRequest request) {
+
+		ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
+
+		String eTag = "0";
+
+		OffsetDateTime dataUltimaAtualizacao = formaPagamentoRepository.getDataUltimaAtualizacao();
+
+		if (dataUltimaAtualizacao != null) {
+			eTag = String.valueOf(dataUltimaAtualizacao.toEpochSecond());
+
+		}
+		
+		if(request.checkNotModified(eTag)) {
+			return null;
+		}
+
 		List<FormaPagamentoModel> formaPagamentoModels = formaPagamentoModelAssembler
 				.toCollectionModel(formaPagamentoRepository.findAll());
 
 		return ResponseEntity.ok().cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS)
-				//.cachePrivate() -> quando cache for algo especifico de uma usuario
-				//.cachePublic() -> inf compartilhada
-				//.cachePrivate().noCache() valida o cache no servidor
-				//.noStore() não cache
-				).body(formaPagamentoModels);
+		// .cachePrivate() -> quando cache for algo especifico de uma usuario
+		// .cachePublic() -> inf compartilhada
+		// .cachePrivate().noCache() valida o cache no servidor
+		// .noStore() não cache
+		).eTag(eTag).body(formaPagamentoModels);
 
 	}
 
 	@GetMapping("/{formaPagamentoId}")
-	public ResponseEntity<FormaPagamentoModel> buscar(@PathVariable Long formaPagamentoId) {
-		FormaPagamento formaPagamento = cadastroFormaPagamento.buscarOuFalhar(formaPagamentoId);
-		
-		FormaPagamentoModel formaPagamentoModel = formaPagamentoModelAssembler.toModel(formaPagamento);
-
-		return ResponseEntity.ok().cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS)).body(formaPagamentoModel);
-
+	public ResponseEntity<FormaPagamentoModel> buscar(@PathVariable Long formaPagamentoId,
+	        ServletWebRequest request) {
+	    
+	    ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
+	    
+	    String eTag = "0";
+	    
+	    OffsetDateTime dataAtualizacao = formaPagamentoRepository
+	            .getDataAtualizacaoById(formaPagamentoId);
+	    
+	    if (dataAtualizacao != null) {
+	        eTag = String.valueOf(dataAtualizacao.toEpochSecond());
+	    }
+	    
+	    if (request.checkNotModified(eTag)) {
+	        return null;
+	    }
+	    
+	    FormaPagamento formaPagamento = cadastroFormaPagamento.buscarOuFalhar(formaPagamentoId);
+	    
+	    FormaPagamentoModel formaPagamentoModel = formaPagamentoModelAssembler.toModel(formaPagamento);
+	    
+	    return ResponseEntity.ok()
+	            .cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS))
+	            .eTag(eTag)
+	            .body(formaPagamentoModel);
 	}
 
 	@PostMapping
