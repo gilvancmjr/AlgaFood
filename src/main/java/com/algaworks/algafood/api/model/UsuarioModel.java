@@ -6,11 +6,12 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class CidadeResumoModel {
+public class UsuarioModel {
+
 	@ApiModelProperty(example = "1")
     private Long id;
-	@ApiModelProperty(example = "Uberlândia")
+	@ApiModelProperty(example = "João da Silva")
     private String nome;
-	@ApiModelProperty(example = "Minas Gerais")
-    private String nomeEstado;
+	@ApiModelProperty(example = "joao.ger@algafood.com.br")
+    private String email;            
 }
