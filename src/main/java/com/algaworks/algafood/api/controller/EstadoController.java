@@ -78,7 +78,7 @@ public class EstadoController implements EstadoControllerOpenApi {
 		return estadoModelAssembler.toModel(estadoAtual);
 	}
 	
-	@DeleteMapping("/{estadoId}")
+	@DeleteMapping(value = "/{estadoId}", produces = {})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable Long estadoId) {
 		cadastroEstado.excluir(estadoId);	
