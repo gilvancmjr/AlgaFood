@@ -18,7 +18,7 @@ public class EnderecoInput {
 	@ApiModelProperty(example = "Rua Floriano Peixoto", required = true)
 	@NotBlank
 	private String logradouro;
-	@ApiModelProperty(example = "1500", required = true)
+	@ApiModelProperty(example = "\"1500\"", required = true)
 	@NotBlank
 	private String numero;
 	@ApiModelProperty(example = "Apto 901")
