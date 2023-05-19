@@ -24,5 +24,4 @@ public class CidadeInputDisassembler {
         cidade.setEstado(new Estado());
         modelMapper.map(cidadeInput, cidade);
     }
-
 }
