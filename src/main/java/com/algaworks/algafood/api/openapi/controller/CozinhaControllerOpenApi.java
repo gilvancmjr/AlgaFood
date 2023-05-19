@@ -2,6 +2,7 @@ package com.algaworks.algafood.api.openapi.controller;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.PagedModel;
 
 import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.api.model.CozinhaModel;
@@ -16,7 +17,7 @@ import io.swagger.annotations.ApiResponses;
 @Api(tags = "Cozinhas")
 public interface CozinhaControllerOpenApi {
 	@ApiOperation("Lista as cozinhas com paginação")
-	public Page<CozinhaModel> listar(Pageable pageable);
+	public PagedModel<CozinhaModel> listar(Pageable pageable);
 
 	@ApiOperation("Busca uma cozinha por ID")
 	@ApiResponses({ @ApiResponse(code = 400, message = "ID da cozinha inválido", response = Problem.class),

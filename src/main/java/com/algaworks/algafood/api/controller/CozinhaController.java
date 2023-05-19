@@ -9,6 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,7 +34,7 @@ import com.algaworks.algafood.domain.service.CadastroCozinhaService;
 
 @RestController
 @RequestMapping("/cozinhas")
-public class CozinhaController  implements CozinhaControllerOpenApi{
+public class CozinhaController implements CozinhaControllerOpenApi {
 
 	@Autowired
 	private CozinhaRepository cozinhaRepository;
@@ -46,18 +48,22 @@ public class CozinhaController  implements CozinhaControllerOpenApi{
 	@Autowired
 	private CozinhaInputDisassembler cozinhaInputDisassembler;
 
+	@Autowired
+	private PagedResourcesAssembler<Cozinha> pagedResourcesAssembler;
+	
+
+	@Override
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public Page<CozinhaModel> listar(@PageableDefault(size = 2) Pageable pageable) {
-		// System.out.println(pageable.getPageNumber());
-		// System.out.println(pageable.getPageSize());
+	public PagedModel<CozinhaModel> listar(@PageableDefault(size = 10) Pageable pageable) {
 		Page<Cozinha> cozinhasPage = cozinhaRepository.findAll(pageable);
-		// System.out.println(cozinhasPage.getTotalElements());
-		List<CozinhaModel> cozinhaModels = cozinhaModelAssembler.toCollectionModel(cozinhasPage.getContent());
-		Page<CozinhaModel> cozinhaModelPage = new PageImpl<>(cozinhaModels, pageable, cozinhasPage.getTotalElements());
-		return cozinhaModelPage;
+		
+		PagedModel<CozinhaModel> cozinhasPagedModel = pagedResourcesAssembler
+				.toModel(cozinhasPage, cozinhaModelAssembler);
+		
+		return cozinhasPagedModel;
 	}
 
-	@GetMapping(value =  "/{cozinhaId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/{cozinhaId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public CozinhaModel buscar(@PathVariable Long cozinhaId) {
 		return cozinhaModelAssembler.toModel(cadastroCozinha.buscarOuFalhar(cozinhaId));
 	}
