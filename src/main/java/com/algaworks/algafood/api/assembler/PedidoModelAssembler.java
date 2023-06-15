@@ -25,32 +25,34 @@ public class PedidoModelAssembler extends RepresentationModelAssemblerSupport<Pe
 
 	@Override
 	public PedidoModel toModel(Pedido pedido) {
-	    PedidoModel pedidoModel = createModelWithId(pedido.getCodigo(), pedido);
-	    modelMapper.map(pedido, pedidoModel);
-	    
-	    pedidoModel.add(algaLinks.linkToPedidos());
-	    
-	    pedidoModel.add(algaLinks.linkToConfirmacaoPedido(pedido.getCodigo(), "confirmar"));
-	    pedidoModel.add(algaLinks.linkToCancelarPedido(pedido.getCodigo(), "cancelar"));
-	    pedidoModel.add(algaLinks.linkToEntregarPedido(pedido.getCodigo(), "entregar"));
-	    
-	    pedidoModel.getRestaurante().add(
-	            algaLinks.linkToRestaurante(pedido.getRestaurante().getId()));
-	    
-	    pedidoModel.getCliente().add(
-	            algaLinks.linkToUsuario(pedido.getCliente().getId()));
-	    
-	    pedidoModel.getFormaPagamento().add(
-	            algaLinks.linkToFormaPagamento(pedido.getFormaPagamento().getId()));
-	    
-	    pedidoModel.getEnderecoEntrega().getCidade().add(
-	            algaLinks.linkToCidade(pedido.getEnderecoEntrega().getCidade().getId()));
-	    
-	    pedidoModel.getItens().forEach(item -> {
-	        item.add(algaLinks.linkToProduto(
-	                pedidoModel.getRestaurante().getId(), item.getProdutoId(), "produto"));
-	    });
-	    
-	    return pedidoModel;
+		PedidoModel pedidoModel = createModelWithId(pedido.getCodigo(), pedido);
+		modelMapper.map(pedido, pedidoModel);
+
+		pedidoModel.add(algaLinks.linkToPedidos());
+
+		if (pedido.podeSerConfirmado()) {
+			pedidoModel.add(algaLinks.linkToConfirmacaoPedido(pedido.getCodigo(), "confirmar"));
+		}
+		if (pedido.podeSerEntregue()) {
+			pedidoModel.add(algaLinks.linkToEntregarPedido(pedido.getCodigo(), "entregar"));
+		}
+		if (pedido.podeSerCancelado()) {
+			pedidoModel.add(algaLinks.linkToCancelarPedido(pedido.getCodigo(), "cancelar"));
+		}
+
+		pedidoModel.getRestaurante().add(algaLinks.linkToRestaurante(pedido.getRestaurante().getId()));
+
+		pedidoModel.getCliente().add(algaLinks.linkToUsuario(pedido.getCliente().getId()));
+
+		pedidoModel.getFormaPagamento().add(algaLinks.linkToFormaPagamento(pedido.getFormaPagamento().getId()));
+
+		pedidoModel.getEnderecoEntrega().getCidade()
+				.add(algaLinks.linkToCidade(pedido.getEnderecoEntrega().getCidade().getId()));
+
+		pedidoModel.getItens().forEach(item -> {
+			item.add(algaLinks.linkToProduto(pedidoModel.getRestaurante().getId(), item.getProdutoId(), "produto"));
+		});
+
+		return pedidoModel;
 	}
 }

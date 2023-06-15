@@ -89,7 +89,17 @@ public class Pedido extends AbstractAggregateRoot<Pedido>{
 	    
 	    registerEvent(new PedidoCanceladoEvent(this));
 	}
-
+	
+	public boolean podeSerConfirmado() {
+		return getStatus().PodeAlterarPara(StatusPedido.CONFIRMADO);
+	}
+	
+	public boolean podeSerEntregue() {
+		return getStatus().PodeAlterarPara(StatusPedido.ENTREGUE);
+	}
+	public boolean podeSerCancelado() {
+		return getStatus().PodeAlterarPara(StatusPedido.CANCELADO);
+	}
 	private void setStatus(StatusPedido novoStatus) {
 		if (getStatus().naoPodeAlterarPara(novoStatus)) {
 			throw new NegocioException(

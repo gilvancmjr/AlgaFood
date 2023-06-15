@@ -21,25 +21,25 @@ public class UsuarioModelAssembler extends RepresentationModelAssemblerSupport<U
 
 	@Autowired
 	private ModelMapper modelMapper;
-	  public UsuarioModelAssembler() {
-	        super(UsuarioController.class, UsuarioModel.class);
-	    }
-	    
-	  @Override
-	  public UsuarioModel toModel(Usuario usuario) {
-	      UsuarioModel usuarioModel = createModelWithId(usuario.getId(), usuario);
-	      modelMapper.map(usuario, usuarioModel);
-	      
-	      usuarioModel.add(algaLinks.linkToUsuarios("usuarios"));
-	      
-	      usuarioModel.add(algaLinks.linkToGruposUsuario(usuario.getId(), "grupos-usuario"));
-	      
-	      return usuarioModel;
-	  }
-	    
-	    @Override
-	    public CollectionModel<UsuarioModel> toCollectionModel(Iterable<? extends Usuario> entities) {
-	        return super.toCollectionModel(entities)
-	            .add(linkTo(UsuarioController.class).withSelfRel());
-	    }   
+
+	public UsuarioModelAssembler() {
+		super(UsuarioController.class, UsuarioModel.class);
+	}
+
+	@Override
+	public UsuarioModel toModel(Usuario usuario) {
+		UsuarioModel usuarioModel = createModelWithId(usuario.getId(), usuario);
+		modelMapper.map(usuario, usuarioModel);
+
+		usuarioModel.add(algaLinks.linkToUsuarios("usuarios"));
+
+		usuarioModel.add(algaLinks.linkToGruposUsuario(usuario.getId(), "grupos-usuario"));
+
+		return usuarioModel;
+	}
+
+	@Override
+	public CollectionModel<UsuarioModel> toCollectionModel(Iterable<? extends Usuario> entities) {
+		return super.toCollectionModel(entities).add(algaLinks.linkToUsuarios());
+	}
 }

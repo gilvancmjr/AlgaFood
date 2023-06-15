@@ -39,5 +39,4 @@ public class FluxoPedidoController implements FluxoPedidoControllerOpenApi{
 		fluxoPedidoService.cancelar(codigoPedido);
 		return ResponseEntity.noContent().build();
 	}
-
 }
