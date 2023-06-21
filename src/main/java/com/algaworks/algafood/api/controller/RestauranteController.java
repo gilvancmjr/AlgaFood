@@ -39,7 +39,6 @@ import com.algaworks.algafood.domain.service.CadastroRestauranteService;
 @RestController
 @RequestMapping(value = "/restaurantes")
 public class RestauranteController implements RestauranteControllerOpenApi {
-
 	@Autowired
 	private RestauranteRepository restauranteRepository;
 
@@ -50,27 +49,29 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 	private RestauranteModelAssembler restauranteModelAssembler;
 
 	@Autowired
-	private RestauranteInputDisassembler restauranteInputDisassembler;
-	@Autowired
 	private RestauranteBasicoModelAssembler restauranteBasicoModelAssembler;
 
 	@Autowired
 	private RestauranteApenasNomeModelAssembler restauranteApenasNomeModelAssembler;
 
+	@Autowired
+	private RestauranteInputDisassembler restauranteInputDisassembler;
+
 	@Override
-//	@JsonView(RestauranteView.Resumo.class)
-	@GetMapping
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public CollectionModel<RestauranteBasicoModel> listar() {
-		return restauranteBasicoModelAssembler.toCollectionModel(restauranteRepository.findAll());
+		return restauranteBasicoModelAssembler
+				.toCollectionModel(restauranteRepository.findAll());
 	}
 
 	@Override
-//	@JsonView(RestauranteView.ApenasNome.class)
-	@GetMapping(params = "projecao=apenas-nome")
+	@GetMapping(params = "projecao=apenas-nome", produces = MediaType.APPLICATION_JSON_VALUE)
 	public CollectionModel<RestauranteApenasNomeModel> listarApenasNomes() {
-		return restauranteApenasNomeModelAssembler.toCollectionModel(restauranteRepository.findAll());
+		return restauranteApenasNomeModelAssembler
+				.toCollectionModel(restauranteRepository.findAll());
 	}
 
+	@Override
 	@GetMapping(value = "/{restauranteId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public RestauranteModel buscar(@PathVariable Long restauranteId) {
 		Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
@@ -78,6 +79,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 		return restauranteModelAssembler.toModel(restaurante);
 	}
 
+	@Override
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public RestauranteModel adicionar(@RequestBody @Valid RestauranteInput restauranteInput) {
@@ -90,9 +92,10 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 		}
 	}
 
+	@Override
 	@PutMapping(value = "/{restauranteId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public RestauranteModel atualizar(@PathVariable Long restauranteId,
-			@RequestBody @Valid RestauranteInput restauranteInput) {
+	                                  @RequestBody @Valid RestauranteInput restauranteInput) {
 		try {
 			Restaurante restauranteAtual = cadastroRestaurante.buscarOuFalhar(restauranteId);
 
@@ -122,6 +125,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 		return ResponseEntity.noContent().build();
 	}
 
+	@Override
 	@PutMapping("/ativacoes")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void ativarMultiplos(@RequestBody List<Long> restauranteIds) {
@@ -132,6 +136,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 		}
 	}
 
+	@Override
 	@DeleteMapping("/ativacoes")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void inativarMultiplos(@RequestBody List<Long> restauranteIds) {
