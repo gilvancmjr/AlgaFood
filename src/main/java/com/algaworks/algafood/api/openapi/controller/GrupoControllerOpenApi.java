@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.springframework.hateoas.CollectionModel;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ import java.util.List;
 public interface GrupoControllerOpenApi {
 
 	@ApiOperation("Lista os grupos")
-	public List<GrupoModel> listar();
+	public CollectionModel<GrupoModel> listar();
 
 	@ApiOperation("Busca um grupo por ID")
 	@ApiResponses({ @ApiResponse(code = 400, message = "ID da grupo inválido", response = Problem.class),

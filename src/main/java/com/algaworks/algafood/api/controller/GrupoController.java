@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,6 +31,7 @@ import com.algaworks.algafood.domain.service.CadastroGrupoService;
 @RequestMapping("/grupos")
 public class GrupoController implements GrupoControllerOpenApi{
 
+	
 	@Autowired
 	private GrupoRepository grupoRepository;
 
@@ -43,7 +45,7 @@ public class GrupoController implements GrupoControllerOpenApi{
 	private GrupoInputDisassembler grupoInputDisassembler;
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public List<GrupoModel> listar() {
+	public CollectionModel<GrupoModel> listar() {
 		List<Grupo> todosGrupos = grupoRepository.findAll();
 
 		return grupoModelAssembler.toCollectionModel(todosGrupos);
